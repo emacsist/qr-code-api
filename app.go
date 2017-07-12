@@ -54,6 +54,12 @@ func qrHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	data := r.FormValue("data")
+	if len(data) == 0 {
+		w.Write([]byte("invalid data content empty."))
+		w.WriteHeader(http.StatusBadRequest)
+		log.Errorf("invalid data content empty.")
+		return
+	}
 	log.Infof("size: %v, data %v", qrSize, data)
 	png, err := qrcode.Encode(data, qrcode.Medium, qrSize)
 	if err != nil {
